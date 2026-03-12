@@ -1,34 +1,36 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import type { Serie } from './types'
+import SerieForm from './components/SerieForm'
+import SerieList from './components/SerieList'
 import './App.css'
+import Home from './pages/Home'
+import Sobre from './pages/Sobre'
+import NavBar from './components/NavBar'
+import Footer from './components/Footer'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [series, setSeries] = useState<Serie[]>([]);
+
+  function adicionarSerie(nova: Serie) {
+    setSeries([...series, nova]);
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <Router>
+      <div className="App">
+        <NavBar />
+        <h1>Site de Séries</h1>
+        <Routes>
+          <Route path="/home" element={<Home />} />
+          <Route path="/" element={<SerieList series={series} />} />
+          <Route path="/adicionar" element={<SerieForm onAdd={adicionarSerie} />} />
+          <Route path="/sobre" element={<Sobre />} />
+          <Route path="*" element={<h1>Página Não Encontrada</h1>} />
+        </Routes>
+        <Footer />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </Router>
   )
 }
 
