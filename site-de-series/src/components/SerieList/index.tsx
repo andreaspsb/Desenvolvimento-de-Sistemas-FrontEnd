@@ -1,17 +1,20 @@
 import type { Serie } from "../../types"
+import { useNavigate } from "react-router-dom"
 
-function SerieList(props: { series: Serie[] }) {
+function SerieList(props: { series: Serie[]; onDelete: (id: string) => void }) {
   //Uma página de listagem (séries cadastradas e todas as suas informações) com a possibilidade de exclusão e edição, podendo serem feitos através de botões ao lado de cada item.
-//Para a listagem, utilize uma tabela ou cards, onde cada linha ou card representa uma série cadastrada, exibindo suas informações e os botões de ação (editar e excluir).
+  //Para a listagem, utilize uma tabela ou cards, onde cada linha ou card representa uma série cadastrada, exibindo suas informações e os botões de ação (editar e excluir).
+
+  const navigate = useNavigate();
 
   function handleEdit(id: string) {
-    // Lógica para editar a série com o ID fornecido
-    console.log(`Editar série com ID: ${id}`);
+    navigate(`/editar/${id}`);
   }
 
   function handleDelete(id: string) {
-    // Lógica para excluir a série com o ID fornecido
-    console.log(`Excluir série com ID: ${id}`);
+    if (confirm('Tem certeza que deseja excluir esta série?')) {
+      props.onDelete(id);
+    }
   }
 
   return (
